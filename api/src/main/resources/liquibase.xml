@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+ 
+    <!--
+    	See http://wiki.openmrs.org/display/docs/Module+liquibase+File for 
+    	documentation on this file.
+    
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+ 
+ 	
+	<changeSet id="household-2019-10-24-06-27" author="moshonk">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="household_main"/></not>
+		</preConditions>
+		<comment>
+			Creating the household_main table
+		</comment>
+		<createTable tableName="household_main">
+			<column name="houseHoldId" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true"></constraints>
+			</column>
+			<column name="primaryMember" type="varchar(50)" />
+			<column name="numberOfHouseHoldMembers" type="int" />
+			<column name="civilStatus" type="varchar(50)" />
+			<column name="creator" type="int" />
+			<column name="date_created" type="datetime" />
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" />
+			<column name="voided_by" type="int" />
+			<column name="void_reason" type="varchar(255)" />
+			
+		</createTable>
+        <addForeignKeyConstraint constraintName="household_main_creator_fk" baseTableName="household_main" baseColumnNames="creator"  referencedTableName="users"
+                                 referencedColumnNames="user_id" />
+        <addForeignKeyConstraint constraintName="household_main_changed_by_fk" baseTableName="household_main" baseColumnNames="changed_by"  referencedTableName="users"
+                                 referencedColumnNames="user_id" />
+        <addForeignKeyConstraint constraintName="household_main_voided_by_fk" baseTableName="household_main" baseColumnNames="voided_by"  referencedTableName="users"
+                                 referencedColumnNames="user_id" />
+    </changeSet> 
+ 
+</databaseChangeLog>
